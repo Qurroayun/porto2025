@@ -4,7 +4,7 @@ import { Github, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SkillSection from "./skills/skillsection";
 
-export default function page() {
+export default function Page() {
   return (
     <main className="bg-white text-black dark:bg-black dark:text-zinc-100 px-4 md:px-12 py-16 font-mono transition-colors duration-300">
       <div className="container mx-auto flex flex-col md:flex-row items-center gap-12">
