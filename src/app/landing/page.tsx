@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Github, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import SkillSection from "./skills/SkillSection";
+import SkillSection from "./skills/skillsection";
 
 export default function page() {
   return (
