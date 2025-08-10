@@ -1,38 +1,38 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 export default function RegisterPage() {
-  const router = useRouter()
-  const [form, setForm] = useState({ name: "", email: "", password: "" })
-  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
-    })
+    });
 
-    setLoading(false)
+    setLoading(false);
 
     if (res.ok) {
-      router.push("/auth/login")
+      router.push("/auth/login");
     } else {
-      alert("Registrasi gagal")
+      alert("Registrasi gagal");
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white dark:bg-black px-4">
@@ -69,8 +69,7 @@ export default function RegisterPage() {
           <Button
             type="submit"
             disabled={loading}
-            className="w-full dark:bg-green-400 dark:text-black"
-          >
+            className="w-full dark:bg-green-400 dark:text-black">
             {loading ? "Registering..." : "Register"}
           </Button>
         </form>
@@ -79,12 +78,11 @@ export default function RegisterPage() {
           Sudah punya akun?{" "}
           <Link
             href="/auth/login"
-            className="text-blue-600 hover:underline dark:text-blue-400"
-          >
+            className="text-blue-600 hover:underline dark:text-blue-400">
             Login
           </Link>
         </p>
       </div>
     </div>
-  )
+  );
 }
