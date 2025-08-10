@@ -8,9 +8,9 @@ type Project = {
   imageUrl: string;
 };
 
-const getBaseUrl = () => {
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`;
+const getBaseUrl = (): string => {
+  if (process.env.NODE_ENV === "production") {
+    return process.env.NEXT_PUBLIC_BASE_URL || "https://qurro-porto.vercel.app";
   }
   return "http://localhost:3000";
 };
