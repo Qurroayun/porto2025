@@ -7,6 +7,7 @@ type Experience = {
   position: string;
   duration: string;
   jobdesk: string;
+  durationend: string;
 };
 
 export default function Page() {
@@ -142,10 +143,22 @@ export default function Page() {
                 ,
               </p>
               <p>
-                duration:{" "}
+                duration Start:{" "}
                 <span className="text-yellow-600 dark:text-yellow-400">
                   &quot;
                   {new Date(exp.duration).toLocaleDateString("id-ID", {
+                    year: "numeric",
+                    month: "long",
+                  })}
+                  &quot;
+                </span>{" "}
+                &#125;
+              </p>
+              <p>
+                duration end:{" "}
+                <span className="text-yellow-600 dark:text-yellow-400">
+                  &quot;
+                  {new Date(exp.durationend).toLocaleDateString("id-ID", {
                     year: "numeric",
                     month: "long",
                   })}

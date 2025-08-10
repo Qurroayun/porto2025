@@ -5,14 +5,15 @@ export async function PUT(req: Request, context: { params: Promise<{ id: string 
   try {
     const { id } = await context.params
     const body = await req.json()
-    const { company, position, duration, jobdesk } = body
+    const { company, position, duration, jobdesk, durationend } = body
     const updated = await prisma.experience.update({
       where: { id },
       data: {
         company,
         position,
         duration,
-        jobdesk
+        jobdesk,
+        durationend
       }
     })
     return NextResponse.json(updated, { status: 200 })

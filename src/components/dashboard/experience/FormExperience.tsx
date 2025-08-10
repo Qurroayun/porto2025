@@ -7,12 +7,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-// Tipe Experience
 export type Experience = {
   id?: string;
   company: string;
   position: string;
-  duration: string; // ISO string format, karena DateTime di Prisma
+  duration: string; // tanggal mulai (ISO string)
+  durationend: string; // tanggal selesai (ISO string)
   jobdesk: string;
 };
 
@@ -30,6 +30,7 @@ export default function FormExperience({
   const [company, setCompany] = useState("");
   const [position, setPosition] = useState("");
   const [duration, setDuration] = useState("");
+  const [durationEnd, setDurationEnd] = useState("");
   const [jobdesk, setJobdesk] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -37,13 +38,14 @@ export default function FormExperience({
     if (experience) {
       setCompany(experience.company);
       setPosition(experience.position);
-      setDuration(experience.duration?.slice(0, 10)); // for date input (yyyy-mm-dd)
+      setDuration(experience.duration?.slice(0, 10));
+      setDurationEnd(experience.durationend?.slice(0, 10) || "");
       setJobdesk(experience.jobdesk);
     }
   }, [experience]);
 
   const handleSubmit = async () => {
-    if (!company || !position || !duration || !jobdesk) {
+    if (!company || !position || !duration || !durationEnd || !jobdesk) {
       toast.error("Semua field wajib diisi!");
       return;
     }
@@ -61,6 +63,7 @@ export default function FormExperience({
             company,
             position,
             duration: new Date(duration).toISOString(),
+            durationend: new Date(durationEnd).toISOString(),
             jobdesk,
           }),
         }
@@ -112,6 +115,15 @@ export default function FormExperience({
           type="date"
           value={duration}
           onChange={(e) => setDuration(e.target.value)}
+        />
+      </div>
+      <div>
+        <Label htmlFor="durationEnd">Tanggal Selesai</Label>
+        <Input
+          id="durationEnd"
+          type="date"
+          value={durationEnd}
+          onChange={(e) => setDurationEnd(e.target.value)}
         />
       </div>
       <div>

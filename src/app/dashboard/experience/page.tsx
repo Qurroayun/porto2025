@@ -31,14 +31,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-// Pastikan file ini ada di path berikut
 import FormExperience from "@/components/dashboard/experience/FormExperience";
 
 interface Experience {
   id: string;
   company: string;
   position: string;
-  duration: string; // atau Date tergantung API-mu
+  duration: string;
+  durationend: string;
   jobdesk: string;
 }
 
@@ -51,10 +51,22 @@ export default function ExperienceDashboardPage() {
   const fetchExperience = async () => {
     try {
       const res = await fetch("/api/experience");
+      if (!res.ok) throw new Error("Gagal fetch");
+
       const data = await res.json();
-      setExperience(data);
-    } catch {
+
+      // Pastikan hasilnya array
+      if (Array.isArray(data)) {
+        setExperience(data);
+      } else if (Array.isArray(data?.data)) {
+        setExperience(data.data);
+      } else {
+        console.error("Format data tidak sesuai:", data);
+        setExperience([]);
+      }
+    } catch (err) {
       toast.error("Gagal mengambil data pengalaman");
+      setExperience([]); // fallback supaya map tidak error
     } finally {
       setLoading(false);
     }
@@ -97,98 +109,113 @@ export default function ExperienceDashboardPage() {
             <TableRow>
               <TableHead>Perusahaan</TableHead>
               <TableHead>Posisi</TableHead>
-              <TableHead>Durasi</TableHead>
+              <TableHead>Tanggal Mulai</TableHead>
+              <TableHead>Tanggal Selesai</TableHead>
               <TableHead>Jobdesk</TableHead>
               <TableHead className="text-right">Aksi</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {experience.map((exp) => (
-              <TableRow key={exp.id}>
-                <TableCell>{exp.company}</TableCell>
-                <TableCell>{exp.position}</TableCell>
-                <TableCell>
-                  {new Date(exp.duration).toLocaleDateString("id-ID", {
-                    year: "numeric",
-                    month: "long",
-                  })}
-                </TableCell>
-                <TableCell className="max-w-sm truncate">
-                  {exp.jobdesk}
-                </TableCell>
-                <TableCell className="text-right space-x-2">
-                  {/* Edit */}
-                  <Dialog
-                    open={openEditId === exp.id}
-                    onOpenChange={(isOpen: boolean) => {
-                      if (isOpen) setOpenEditId(exp.id);
-                      else setOpenEditId(null);
-                    }}>
-                    <DialogTrigger asChild>
-                      <Button size="sm" variant="outline">
-                        <Pencil className="w-4 h-4" />
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Edit Pengalaman</DialogTitle>
-                        <DialogDescription>Update data kamu.</DialogDescription>
-                      </DialogHeader>
-                      <FormExperience
-                        experience={exp}
-                        onSuccess={() => {
-                          fetchExperience();
-                          setOpenEditId(null);
-                        }}
-                        setOpen={(open: boolean) => {
-                          if (!open) setOpenEditId(null);
-                        }}
-                      />
-                    </DialogContent>
-                  </Dialog>
+            {Array.isArray(experience) && experience.length > 0 ? (
+              experience.map((exp) => (
+                <TableRow key={exp.id}>
+                  <TableCell>{exp.company}</TableCell>
+                  <TableCell>{exp.position}</TableCell>
+                  <TableCell>
+                    {new Date(exp.duration).toLocaleDateString("id-ID", {
+                      year: "numeric",
+                      month: "long",
+                    })}
+                  </TableCell>
+                  <TableCell>
+                    {new Date(exp.durationend).toLocaleDateString("id-ID", {
+                      year: "numeric",
+                      month: "long",
+                    })}
+                  </TableCell>
+                  <TableCell className="max-w-sm truncate">
+                    {exp.jobdesk}
+                  </TableCell>
+                  <TableCell className="text-right space-x-2">
+                    {/* Edit */}
+                    <Dialog
+                      open={openEditId === exp.id}
+                      onOpenChange={(isOpen: boolean) => {
+                        if (isOpen) setOpenEditId(exp.id);
+                        else setOpenEditId(null);
+                      }}>
+                      <DialogTrigger asChild>
+                        <Button size="sm" variant="outline">
+                          <Pencil className="w-4 h-4" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Edit Pengalaman</DialogTitle>
+                          <DialogDescription>
+                            Update data kamu.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <FormExperience
+                          experience={exp}
+                          onSuccess={() => {
+                            fetchExperience();
+                            setOpenEditId(null);
+                          }}
+                          setOpen={(open: boolean) => {
+                            if (!open) setOpenEditId(null);
+                          }}
+                        />
+                      </DialogContent>
+                    </Dialog>
 
-                  {/* Delete */}
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button size="sm" variant="destructive">
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          Yakin ingin menghapus pengalaman ini?
-                        </AlertDialogTitle>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Batal</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={async () => {
-                            try {
-                              const res = await fetch(
-                                `/api/experience/${exp.id}`,
-                                {
-                                  method: "DELETE",
-                                }
-                              );
-                              if (!res.ok) throw new Error("Gagal hapus");
+                    {/* Delete */}
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button size="sm" variant="destructive">
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Yakin ingin menghapus pengalaman ini?
+                          </AlertDialogTitle>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Batal</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={async () => {
+                              try {
+                                const res = await fetch(
+                                  `/api/experience/${exp.id}`,
+                                  { method: "DELETE" }
+                                );
+                                if (!res.ok) throw new Error("Gagal hapus");
 
-                              setExperience((prev) =>
-                                prev.filter((e) => e.id !== exp.id)
-                              );
-                              toast.success("Berhasil dihapus!");
-                            } catch (err) {
-                              toast.error("Gagal menghapus");
-                            }
-                          }}>
-                          Lanjutkan
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
+                                setExperience((prev) =>
+                                  prev.filter((e) => e.id !== exp.id)
+                                );
+                                toast.success("Berhasil dihapus!");
+                              } catch (err) {
+                                toast.error("Gagal menghapus");
+                              }
+                            }}>
+                            Lanjutkan
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center">
+                  Tidak ada data pengalaman.
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       )}

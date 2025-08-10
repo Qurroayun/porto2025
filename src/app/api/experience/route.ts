@@ -15,13 +15,14 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-    const { company, position, duration, jobdesk } = body;
+    const { company, position, duration, jobdesk, durationend } = body;
     const newExperience = await prisma.experience.create({
       data: {
         company,
         position,
         duration,
-        jobdesk
+        jobdesk,
+        durationend
       }
     })
     return NextResponse.json(newExperience, { status: 201 })

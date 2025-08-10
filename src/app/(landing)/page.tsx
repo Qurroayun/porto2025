@@ -56,7 +56,7 @@ export default function Page() {
         </div>
 
         {/* Foto Profil */}
-        <div className="flex justify-center md:justify-center flex-1 hidden md:block">
+        <div className="flex justify-center md:justify-center flex-1 md:block">
           <div className="w-96 h-96 relative rounded-full overflow-hidden border-4 border-[#007acc]/40 dark:border-[#4EC9B0]/40 shadow-md shadow-[#007acc]/10 dark:shadow-[#4EC9B0]/10">
             <Image
               src="/images/PP.png"

@@ -35,9 +35,10 @@ model Project {
 }
 
 model Experience {
-  id       String   @id @default(cuid())
-  company  String
-  position String
-  duration DateTime
-  jobdesk  String
+  id          String    @id @default(cuid())
+  company     String
+  position    String
+  duration    DateTime
+  jobdesk     String
+  durationend DateTime?
 }
