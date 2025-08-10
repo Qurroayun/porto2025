@@ -42,21 +42,21 @@ export default function ContactPage() {
         {/* Left: Icons */}
         <div className="flex flex-row lg:flex-col gap-6 text-3xl text-blue-600 dark:text-blue-400 justify-center items-center w-full lg:w-auto">
           <a
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/in/qurrota-ayun-a45a48256/"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-blue-800 transition">
             <FaLinkedin />
           </a>
           <a
-            href="https://github.com"
+            href="https://github.com/Qurroayun"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-gray-800 transition">
             <FaGithub />
           </a>
           <a
-            href="https://gitlab.com"
+            href="https://gitlab.com/kuriayun"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-pink-600 transition">
@@ -69,12 +69,18 @@ export default function ContactPage() {
             Do you have a project? <br />
             Or want to collaborate on something awesome? <br />
             you want fast ? sorry i&apos;m human you can use GPT
+            <br />
+            do you have bug ? because using GPT, Just call me
           </p>
         </div>
 
         <div className="lg:hidden mt-10 text-center">
           <p className="text-lg font-medium text-gray-700 dark:text-gray-200">
-            Do you have a project? Or want to collaborate on something awesome?
+            Do you have a project? <br />
+            Or want to collaborate on something awesome? <br />
+            you want fast ? sorry i&apos;m human you can use GPT
+            <br />
+            do you have bug ? because using GPT, Just call me
           </p>
         </div>
 

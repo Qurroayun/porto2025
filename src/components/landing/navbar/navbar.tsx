@@ -15,8 +15,28 @@ export default function Navbar() {
     setMounted(true);
   }, []);
 
+  // Component untuk menampilkan nama "const QurottaAyun..."
+  const BrandName = ({ className = "" }) => (
+    <span className={`font-mono ${className}`}>
+      <span className="text-green-600 dark:text-green-400 font-bold">
+        const
+      </span>{" "}
+      <span className="text-blue-600 dark:text-blue-400 font-bold">
+        QurottaAyun
+      </span>
+      <span className="text-white dark:text-white">: </span>
+      <span className="text-yellow-600 dark:text-yellow-300">Developer</span>
+      <span className="text-white">&lt;</span>
+      <span className="text-pink-500">
+        &quot;Frontend&quot; | &quot;Backend&quot; | &quot;FullStack&quot;
+      </span>
+      <span className="text-white">&gt;</span> ={" "}
+      <span className="text-white">&#123;</span>
+    </span>
+  );
+
   return (
-    <header className="w-full px-6 py-4 border-b border-green-500/40 bg-[#f8f9fa] dark:bg-black text-gray-900 dark:text-green-400 font-mono shadow-sm">
+    <header className="w-full sticky top-0 z-50 px-6 py-4 border-b border-green-500/40 bg-[#f8f9fa] dark:bg-black text-gray-900 dark:text-green-400 font-mono shadow-sm">
       {/* Desktop Layout */}
       <div className="hidden md:flex items-center justify-between">
         {/* Left: Credential Links */}
@@ -47,26 +67,11 @@ export default function Navbar() {
           <span className="text-[#569CD6] font-bold">&#125;)();</span>
         </div>
 
-        {/* Center: TypeScript-style Name */}
-        <Link href="/">
-          <div className="text-center font-mono text-[0.95rem] leading-tight">
-            <span className="text-green-600 dark:text-green-400 font-bold">
-              const
-            </span>{" "}
-            <span className="text-blue-600 dark:text-blue-400 font-bold">
-              QurottaAyun
-            </span>
-            <span className="text-white dark:text-white">: </span>
-            <span className="text-yellow-600 dark:text-yellow-300">
-              Developer
-            </span>
-            <span className="text-white">&lt;</span>
-            <span className="text-pink-500">
-              &quot;Frontend&quot; | &quot;Backend&quot;
-            </span>
-            <span className="text-white">&gt;</span> ={" "}
-            <span className="text-white">&#123;</span>
-          </div>
+        {/* Center: Brand */}
+        <Link
+          href="/"
+          className="text-center font-mono text-[0.95rem] leading-tight">
+          <BrandName />
         </Link>
 
         {/* Right: Toggle Theme + Login */}
@@ -92,19 +97,10 @@ export default function Navbar() {
       {/* Mobile Layout */}
       <div className="md:hidden flex flex-col items-center">
         <div className="flex items-center justify-between w-full">
-          {/* Center: TypeScript-style Name */}
-          <div className="text-left font-mono text-xs">
-            <span className="text-green-600 font-bold">const</span>{" "}
-            <span className="text-blue-600 font-bold">QurottaAyun</span>
-            <span className="text-white">: </span>
-            <span className="text-yellow-600">Developer</span>
-            <span className="text-white">&lt;</span>
-            <span className="text-pink-500">
-              &quot;Frontend&quot; | &quot;Creative&quot;
-            </span>
-            <span className="text-white">&gt;</span> ={" "}
-            <span className="text-white">&#123;</span>
-          </div>
+          {/* Brand Clickable */}
+          <Link href="/" className="text-left font-mono text-xs">
+            <BrandName />
+          </Link>
 
           {/* Toggle Dropdown Menu */}
           <Button
@@ -124,7 +120,7 @@ export default function Navbar() {
               </span>
 
               <Link
-                href="#/"
+                href="/"
                 className="hover:underline text-gray-700 dark:text-green-300">
                 Home
               </Link>
